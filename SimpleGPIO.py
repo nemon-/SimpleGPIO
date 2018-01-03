@@ -2,7 +2,7 @@
 
 class SimpleGPIO():  
     def __init__(self,gpio=None): 
-        self._base_path= "/sys/class/gpio/"#"D:/prj/Snapdragon410/gpio/"#
+        self._base_path= "/sys/class/gpio/"
         self._gpio = gpio
         #self._direction = None
         #self._edge = None
@@ -20,16 +20,18 @@ class SimpleGPIO():
         value = fo.read(7)
         fo.close()
         return value
+    def _isOne(self,strValue): 
+        return False if len(strValue)<=0 else strValue[0]=='1'
     def export(self):
         self._writeFile( self._base_path+"export" , str(self._gpio) )
     def unexport(self):  
         self._writeFile( self._base_path+"unexport" , str(self._gpio) )
-    #in或out。写入low或high
+    # direction should be"in" or "out", write tofile as "low" or "high".
     def _setDirection(self,direction): 
         self._writeFile(  self._base_path+"gpio"+str(self._gpio)+"/direction" , direction)
     def getDirection(self):
         return self._readFile( self._base_path+"gpio"+str(self._gpio)+"/direction")
-    #”none”, “rising”, “falling”，”both”
+    # edge should be "none" or "rising" or "falling" or "both"
     def _setEdge(self,edge):
         self._writeFile(  self._base_path+"gpio"+str(self._gpio)+"/edge" , edge)
     def getEdge(self):
@@ -60,4 +62,6 @@ class SimpleGPIO():
         self._setValue(self,'0')
     def getValue(self):
         return self._readFile( self._base_path+"gpio"+str(self._gpio)+"/value" )
+    def getIsHigh(self):
+        return self._isOne(self.getValue() )
 
