@@ -1,2 +1,4 @@
 # SimpleGPIO
-Simple GPIO lib forpython
+Simple GPIO lib for python
+
+# 
